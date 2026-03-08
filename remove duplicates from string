@@ -1,0 +1,42 @@
+/*
+Problem: Remove Duplicates from String
+Platform: GeeksforGeeks
+
+Approach:
+Use a visited array of size 256 to track characters.
+If character appears first time → add to result.
+Otherwise skip it.
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+string removeDuplicates(string &s) {
+
+    vector<int> visited(256, 0);
+    string ans = "";
+
+    for(int i = 0; i < s.length(); i++) {
+
+        if(visited[s[i]] == 0) {
+            ans += s[i];
+            visited[s[i]] = 1;
+        }
+    }
+
+    return ans;
+}
+
+int main() {
+
+    string s;
+    cin >> s;
+
+    cout << removeDuplicates(s);
+
+    return 0;
+}
