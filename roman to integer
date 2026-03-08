@@ -1,0 +1,70 @@
+/*
+Problem: Roman to Integer
+
+Roman Symbols:
+I = 1
+V = 5
+X = 10
+L = 50
+C = 100
+D = 500
+M = 1000
+
+Approach:
+1. Traverse the string from left to right.
+2. Compare current value with next value.
+3. If current < next → subtract.
+4. Otherwise → add.
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Function to get value of Roman symbol
+int value(char c){
+    
+    if(c=='I') return 1;
+    if(c=='V') return 5;
+    if(c=='X') return 10;
+    if(c=='L') return 50;
+    if(c=='C') return 100;
+    if(c=='D') return 500;
+    if(c=='M') return 1000;
+    
+    return 0;
+}
+
+// Function to convert Roman to Integer
+int romanToInteger(string s){
+
+    int ans = 0;
+    int n = s.length();
+
+    for(int i = 0; i < n; i++){
+
+        int curr = value(s[i]);
+
+        if(i+1 < n && curr < value(s[i+1]))
+            ans -= curr;
+        else
+            ans += curr;
+    }
+
+    return ans;
+}
+
+int main(){
+
+    string s;
+
+    cout << "Enter Roman Number: ";
+    cin >> s;
+
+    cout << "Integer Value: " << romanToInteger(s) << endl;
+
+    return 0;
+}
