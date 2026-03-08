@@ -1,0 +1,55 @@
+/*
+Problem: Most Frequent Character in a String
+
+Approach:
+1. Create a frequency array of size 26.
+2. Traverse the string and count frequency of each character.
+3. Find the character with maximum frequency.
+4. If multiple characters have same frequency,
+   choose lexicographically smaller character.
+
+Time Complexity: O(n)
+Space Complexity: O(1)
+*/
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+char getMaxOccuringChar(string &s) {
+
+    int freq[26] = {0};
+
+    // Count frequency of each character
+    for(int i = 0; i < s.length(); i++) {
+        freq[s[i] - 'a']++;
+    }
+
+    int maxFreq = 0;
+    char result = 'a';
+
+    // Find maximum occurring character
+    for(int i = 0; i < 26; i++) {
+
+        if(freq[i] > maxFreq) {
+            maxFreq = freq[i];
+            result = i + 'a';
+        }
+    }
+
+    return result;
+}
+
+int main() {
+
+    string s;
+
+    cout << "Enter string: ";
+    cin >> s;
+
+    char ans = getMaxOccuringChar(s);
+
+    cout << "Most frequent character: " << ans << endl;
+
+    return 0;
+}
