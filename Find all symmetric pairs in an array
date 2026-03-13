@@ -1,0 +1,40 @@
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+using namespace std;
+
+/*
+Problem:
+Find all symmetric pairs in an array.
+
+Example:
+Input  : (1,2) (3,4) (5,6) (2,1) (4,3)
+Output : (2,1) (4,3)
+*/
+
+int main() {
+
+    vector<pair<int,int>> arr = {
+        {1,2},
+        {3,4},
+        {5,6},
+        {2,1},
+        {4,3}
+    };
+
+    unordered_map<int,int> mp;
+
+    for(auto p : arr){
+
+        int first = p.first;
+        int second = p.second;
+
+        if(mp.find(second) != mp.end() && mp[second] == first){
+            cout << "(" << first << "," << second << ")" << endl;
+        }
+        else{
+            mp[first] = second;
+        }
+    }
+
+}
