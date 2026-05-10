@@ -1,0 +1,172 @@
+Given n, usse minimum number of perfect squares (1, 4, 9, 16, …) ka sum banaana hai.
+
+Example:
+
+n = 12
+👉 Answer = 3 (4 + 4 + 4)
+🧠 Step 1: First Principle Thinking
+
+👉 Seedha sawal:
+
+“Main n ka sum bana raha hoon… last me maine kya add kiya hoga?”
+
+👉 Last me tumne koi square number add kiya hoga:
+
+1² = 1
+2² = 4
+3² = 9
+Step 2: Problem ko tod
+
+Agar last me tumne k² add kiya:
+
+remaining = n - k²
+
+👉 Matlab:
+
+“Agar mujhe n banana hai, to pehle mujhe n - k² banana aana chahiye”
+
+💡 Yahi DP ban gaya
+dp[n]=1+dp[n−k
+2]
+Aur kyunki multiple squares try kar sakte ho:
+
+dp[n]=min(1+dp[n−1], 1+dp[n−4], 1+dp[n−9],...)
+
+Base Case
+dp[0] = 0
+
+
+Step 3: Table bana ke samjhte hain (n = 12)
+Initial:
+i:     0  1  2  3  4  5  6  7  8  9 10 11 12
+dp:    0 INF INF INF INF INF INF INF INF INF INF INF INF
+👉 0 banane ke liye 0 numbers
+✅ i = 1
+
+Squares ≤ 1 → {1}
+
+
+
+🔥 First Thought (sabse basic soch)
+
+Soch:
+
+“Agar mujhe 12 banana hai, to last me maine kya add kiya hoga?”
+
+👉 Options:
+
+last me 1 liya hoga
+ya 4 liya hoga
+ya 9 liya hoga
+🧠 Case-wise soch (IMPORTANT)
+🔹 Case 1: Last me 1 liya
+12 = 1 + 11
+
+👉 Matlab:
+
+pehle mujhe 11 banana aana chahiye
+
+🔹 Case 2: Last me 4 liya
+12 = 4 + 8
+
+👉 Matlab:
+
+pehle mujhe 8 banana aana chahiye
+
+🔹 Case 3: Last me 9 liya
+12 = 9 + 3
+
+👉 Matlab:
+
+pehle mujhe 3 banana aana chahiye
+
+💡 Ab main baat
+
+👉 Agar mujhe pata hai:
+
+11 banane me kitne numbers lagte hain
+8 banane me kitne lagte hain
+3 banane me kitne lagte hain
+
+👉 To main 12 bana sakta hoon:
+
+1 + (unme se minimum)
+🔥 Isi ko DP bolte hain
+
+👉 Formula:
+
+dp[12] = 1 + min(dp[11], dp[8], dp[3])
+📊 Chhota example pehle samajh
+🔹 dp[1]
+1 = 1
+→ dp[1] = 1
+🔹 dp[2]
+2 = 1 + 1
+→ dp[2] = 2
+🔹 dp[3]
+3 = 1 + 1 + 1
+→ dp[3] = 3
+🔹 dp[4]
+
+Options:
+
+4 = 1+1+1+1 → 4
+4 = 4 → 1  ✅
+
+👉 dp[4] = 1
+
+🔹 dp[8]
+
+Options:
+
+8 = 4 + 4 → 2  ✅
+8 = 1 + 7 → 4
+
+👉 dp[8] = 2
+
+🔹 dp[11]
+
+Options:
+
+11 = 9 + 2 → 1 + dp[2] = 3
+11 = 4 + 7 → 1 + dp[7] = 5
+
+👉 dp[11] = 3
+
+🔥 Ab final dp[12]
+dp[12] = 1 + min(dp[11], dp[8], dp[3])
+       = 1 + min(3, 2, 3)
+       = 1 + 2
+       = 3
+🎯 Final Answer
+
+👉 12 = 4 + 4 + 4 → 3 numbers
+dp[1] = 1 + dp[0] = 1
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int solve(int n, vector<int>& dp) {
+    if (n == 0) return 0;
+
+    if (dp[n] != -1) return dp[n];
+
+    int ans = INT_MAX;
+
+    for (int j = 1; j*j <= n; j++) {
+        ans = min(ans, 1 + solve(n - j*j, dp));
+    }
+
+    return dp[n] = ans;
+}
+
+int main() {
+    int n;
+    cin >> n;   // TCS input
+
+    vector<int> dp(n + 1, -1);
+
+    cout << solve(n, dp);  // TCS output
+
+    return 0;
+}
