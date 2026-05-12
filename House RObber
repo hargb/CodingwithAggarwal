@@ -1,0 +1,139 @@
+🏠 Problem (House Robber)
+
+👉 Given array: [2, 7, 9, 3, 1] num naam hai array ka
+👉 Each element = paisa in a house
+👉 Constraint: adjacent houses loot nahi kar sakte
+
+👉 Goal: maximum paisa lootna
+🧠 First Principle Thinking (Interview me bolna)
+
+“At every house i, I have 2 choices:
+
+Rob this house → then I must skip i-1
+Skip this house → move to next”
+🔥 Recurrence (Core Idea)
+
+dp[i]=max(dp[i−1], nums[i]+dp[i−2])
+
+🔍 Dry Run (VERY IMPORTANT)
+
+Array: [2, 7, 9, 3, 1]
+
+Step 1:
+dp[0] = 2
+dp[1] = max(2, 7) = 7
+Step 2:
+i = 2:
+dp[2] = max(dp[1]=7, 9 + dp[0]=2+9=11) = 11
+
+i = 3:
+dp[3] = max(dp[2]=11, 3 + dp[1]=7+3=10) = 11
+
+i = 4:
+dp[4] = max(dp[3]=11, 1 + dp[2]=11+1=12) = 12
+
+✅ Final Answer = 12
+
+💡 First Principle:
+
+“Har index pe 2 choice — pick ya skip”
+
+Recurrence:
+f(i) = max(
+    nums[i] + f(i-2),   // pick
+    f(i-1)              // skip
+)
+🔍 Dry Run (Small Part)
+f(4):
+  pick = 1 + f(2)
+  skip = f(3)
+f(2):
+  pick = 9 + f(0) = 11
+  skip = f(1) = 7
+  => 11
+f(3):
+  pick = 3 + f(1) = 10
+  skip = f(2) = 11
+  => 11
+f(4):
+  pick = 1 + 11 = 12
+  skip = 11
+=> 12
+❌ Problem:
+Same calls repeat ho rahe (f(2), f(1))
+Time = O(2^n)
+🧠 STEP 2: TOP-DOWN (Memoization)
+
+👉 Same recursion + cache
+
+int f(int i, vector<int>& nums, vector<int>& dp){
+    if(i < 0) return 0;
+    if(i == 0) return nums[0];
+
+    if(dp[i] != -1) return dp[i];
+
+    int pick = nums[i] + f(i-2, nums, dp);
+    int skip = f(i-1, nums, dp);
+
+    return dp[i] = max(pick, skip);
+}
+
+⚡ STEP 3: BOTTOM-UP (Tabulation)
+
+👉 “Recursion ko ulta socho”
+👉 Small → big build karo
+
+Core Formula (MOST IMPORTANT)
+
+dp[i]=max(dp[i−1], nums[i]+dp[i−2])
+
+🔍 Dry Run
+nums = [2,7,9,3,1]
+
+dp[0] = 2
+dp[1] = max(2,7) = 7
+i=2 → max(7, 9+2=11) = 11
+i=3 → max(11, 3+7=10) = 11
+i=4 → max(11, 1+11=12) = 12
+
+👉 Answer = 12
+
+Code:
+int rob(vector<int>& nums) {
+    int n = nums.size();
+    vector<int> dp(n);
+
+    dp[0] = nums[0];
+    dp[1] = max(nums[0], nums[1]);
+
+    for(int i=2;i<n;i++){
+        dp[i] = max(dp[i-1], nums[i] + dp[i-2]);
+    }
+    return dp[n-1];
+}
+🚀 STEP 4: SPACE OPTIMIZED (Best)
+
+👉 Sirf last 2 values chahiye
+
+🔍 Dry Run
+prev2 = 2
+prev1 = 7
+
+i=2 → curr = max(7, 9+2=11) = 11
+i=3 → curr = max(11, 3+7=10) = 11
+i=4 → curr = max(11, 1+11=12) = 12
+Code:
+int rob(vector<int>& nums) {
+    int n = nums.size();
+    if(n==1) return nums[0];
+
+    int prev2 = nums[0];
+    int prev1 = max(nums[0], nums[1]);
+
+    for(int i=2;i<n;i++){
+        int curr = max(prev1, nums[i] + prev2);
+        prev2 = prev1;
+        prev1 = curr;
+    }
+    return prev1;
+}
