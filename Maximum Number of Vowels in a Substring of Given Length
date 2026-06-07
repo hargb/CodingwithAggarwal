@@ -1,0 +1,109 @@
+int maxVowels(string s, int k) {
+    int n = s.length();
+    int maxCount = 0;
+
+    for (int i = 0; i <= n - k; i++) {
+        int count = 0;
+
+        // check substring from i to i+k-1
+        for (int j = i; j < i + k; j++) {
+            if (s[j] == 'a' || s[j] == 'e' || 
+                s[j] == 'i' || s[j] == 'o' || 
+                s[j] == 'u') {
+                count++;
+            }
+        }
+
+        maxCount = max(maxCount, count);
+    }
+
+    return maxCount;
+}
+
+
+🔹 Dry Run (IMPORTANT)
+
+s = "abciiidef", k = 3
+
+i	substring	vowels
+0	abc	1
+1	bci	1
+2	cii	2
+3	iii	3 ✅
+4	iid	2
+5	ide	2
+6	def	1
+
+👉 Answer = 3
+
+🔹 Complexity
+Time = O(n * k) ❌ (slow)
+🧠 Problem with brute
+
+👉 Har window me fir se counting → repeat work
+👉 Same characters baar-baar check ho rahe
+
+3. OPTIMAL CODE (Sliding Window)
+int maxVowels(string s, int k) {
+    int n = s.length();
+    int count = 0;
+
+    // first window
+    for (int i = 0; i < k; i++) {
+        if (s[i]=='a'||s[i]=='e'||s[i]=='i'||s[i]=='o'||s[i]=='u')
+            count++;
+    }
+
+    int ans = count;
+
+    // slide window
+    for (int i = k; i < n; i++) {
+
+        // add new character
+        if (s[i]=='a'||s[i]=='e'||s[i]=='i'||s[i]=='o'||s[i]=='u')
+            count++;
+
+        // remove old character
+        if (s[i-k]=='a'||s[i-k]=='e'||s[i-k]=='i'||s[i-k]=='o'||s[i-k]=='u')
+            count--;
+
+        ans = max(ans, count);
+    }
+
+    return ans;
+}
+🔥 Dry Run (Visualization style)
+
+s = abciiidef, k = 3
+
+Step 1: First window
+[a b c] → vowels = 1
+Slide 1:
+remove 'a', add 'i'
+[b c i] → still 1
+Slide 2:
+remove 'b', add 'i'
+[c i i] → 2
+Slide 3:
+remove 'c', add 'i'
+[i i i] → 3 ✅
+Slide 4:
+remove 'i', add 'd'
+[i i d] → 2
+
+👉 Maximum = 3
+
+
+🔥 Shortcut Optimization (clean code)
+
+👉 Instead of writing 5 comparisons every time:
+
+bool isVowel(char c) {
+    return string("aeiou").find(c) != string::npos;
+}
+
+Then:
+
+if (isVowel(s[i])) count++;
+
+👉 Cleaner + readable (INTERVIEW FRIENDLY)
