@@ -1,0 +1,99 @@
+🔹 Problem
+
+👉 Given:
+
+array nums
+integer k
+
+👉 Find maximum average of any subarray of size k
+
+🔹 Example
+nums = [1,12,-5,-6,50,3]
+k = 4
+
+Subarrays of size 4:
+
+[1,12,-5,-6] → sum = 2 → avg = 0.5
+[12,-5,-6,50] → sum = 51 → avg = 12.75 ✅
+[-5,-6,50,3] → sum = 42 → avg = 10.5
+
+👉 Answer = 12.75
+
+🔴 1. BRUTE FORCE
+
+👉 Har subarray ke liye sum calculate karo
+
+🔹 Code (basic)
+double findMaxAverage(vector<int>& nums, int k) {
+    int n = nums.size();
+    double maxAvg = -1e9;
+
+    for (int i = 0; i <= n - k; i++) {
+        int sum = 0;
+
+        for (int j = i; j < i + k; j++) {
+            sum += nums[j];
+        }
+
+        double avg = (double)sum / k;
+        maxAvg = max(maxAvg, avg);
+    }
+
+    return maxAvg;
+}
+🔹 Complexity
+Time = O(n * k) ❌
+
+
+🟢 2. OPTIMAL (Sliding Window)
+
+👉 Window size fixed = k
+👉 Har step:
+
+ek element add
+ek remove
+
+double findMaxAverage(vector<int>& nums, int k) {
+    int n = nums.size();
+
+    // first window sum
+    int sum = 0;
+    for (int i = 0; i < k; i++) {
+        sum += nums[i];
+    }
+
+    int maxSum = sum;
+
+    // sliding window
+    for (int i = k; i < n; i++) {
+        sum += nums[i];       // add new
+        sum -= nums[i - k];   // remove old
+
+        maxSum = max(maxSum, sum);
+    }
+
+    return (double)maxSum / k;
+
+🔥 Dry Run (Visualization)
+
+nums = [1,12,-5,-6,50,3], k=4
+
+Step 1: First window
+[1, 12, -5, -6] → sum = 2
+Slide 1:
+remove 1, add 50
+[12, -5, -6, 50] → sum = 51 ✅
+Slide 2:
+remove 12, add 3
+[-5, -6, 50, 3] → sum = 42
+
+👉 Max sum = 51
+👉 Max avg = 51 / 4 = 12.75
+
+🔥 Complexity
+Time = O(n) ✅
+Space = O(1)
+🧠 Important Insight
+
+👉 Average maximize karna = sum maximize karna
+👉 Isliye directly sum track karo (shortcut logic)
