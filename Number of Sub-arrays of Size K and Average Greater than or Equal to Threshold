@@ -1,0 +1,118 @@
+🔹 Problem
+
+👉 Given:
+
+array arr
+integer k
+integer threshold
+
+👉 Count karo:
+
+kitne subarrays (size = k) ka average ≥ threshold hai
+
+🔹 Example
+arr = [2,2,2,2,5,5,5,8]
+k = 3
+threshold = 4
+
+👉 Check:
+
+[2,2,2] → avg = 2 ❌
+[2,2,2] → 2 ❌
+[2,2,2] → 2 ❌
+[2,2,5] → 3 ❌
+[2,5,5] → 4 ✅
+[5,5,5] → 5 ✅
+[5,5,8] → 6 ✅
+
+👉 Answer = 3
+
+🔴 1. BRUTE FORCE
+int numOfSubarrays(vector<int>& arr, int k, int threshold) {
+    int n = arr.size();
+    int count = 0;
+
+    for (int i = 0; i <= n - k; i++) {
+        int sum = 0;
+
+        for (int j = i; j < i + k; j++) {
+            sum += arr[j];
+        }
+
+        double avg = (double)sum / k;
+        if (avg >= threshold) count++;
+    }
+
+    return count;
+}
+🔹 Complexity
+O(n * k) ❌
+🧠 Optimization Insight (VERY IMPORTANT)
+
+👉 Condition:
+
+avg >= threshold
+
+👉 Multiply both sides by k:
+
+sum >= k * threshold
+
+🔥 HUGE OPTIMIZATION
+👉 Ab division ki zarurat hi nahi!
+
+🟢 2. OPTIMAL (Sliding Window)
+int numOfSubarrays(vector<int>& arr, int k, int threshold) {
+    int n = arr.size();
+    int target = k * threshold;
+    int sum = 0, count = 0;
+
+    // first window
+    for (int i = 0; i < k; i++) {
+        sum += arr[i];
+    }
+
+    if (sum >= target) count++;
+
+    // sliding window
+    for (int i = k; i < n; i++) {
+        sum += arr[i];       // add new
+        sum -= arr[i - k];   // remove old
+
+        if (sum >= target) count++;
+    }
+
+    return count;
+}
+🔥 Dry Run (Visualization)
+
+arr = [2,2,2,2,5,5,5,8], k=3, threshold=4
+
+👉 target = 3 * 4 = 12
+
+Step 1:
+[2,2,2] → sum = 6 ❌
+Slide 1:
+[2,2,2] → sum = 6 ❌
+Slide 2:
+[2,2,2] → sum = 6 ❌
+Slide 3:
+[2,2,5] → sum = 9 ❌
+Slide 4:
+[2,5,5] → sum = 12 ✅
+Slide 5:
+[5,5,5] → sum = 15 ✅
+Slide 6:
+[5,5,8] → sum = 18 ✅
+
+👉 Count = 3
+
+🔥 Complexity
+Time = O(n) ✅
+Space = O(1)\
+🧠 Pattern Summary
+
+Same pattern:
+
+Fixed window size = k
+Maintain running sum
+Slide window efficiently
