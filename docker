@@ -1,0 +1,267 @@
+First Principle: Docker bana hi kyun?
+Real Problem
+
+Maan le ek company me 5 developers hain.
+
+Ek backend project hai.
+
+Developer A ke system pe:
+
+Node.js 20
+MongoDB 7
+Redis 7
+Ubuntu
+
+Sab chal raha hai.
+
+Ab code Developer B ko diya.
+
+Uske system pe:
+
+Node.js 18
+MongoDB 6
+Windows
+
+Project crash.
+
+Error:
+
+Works on my machine.
+
+Ye software industry ki sabse famous problem thi.
+
+Tech Analogy
+
+Soch ek game hai.
+
+Tumne GTA 5 install ki.
+
+Tumhare PC me
+
+Windows 11
+RTX 4060
+DirectX 12
+
+Friend ke PC me
+
+Windows 10
+Old drivers
+
+Game nahi chalti.
+
+Software bhi exactly aisa hi tha.
+
+Docker ka Idea
+
+Docker bola
+
+Main application ke saath uska poora environment bhi pack kar dunga.
+
+Matlab sirf code nahi.
+
+Saath me
+
+Node
+npm
+Libraries
+Environment
+Dependencies
+
+Sab.
+
+Ek package ban gaya.
+
+Is package ko bolte hain
+
+Docker Image
+
+Real Life Analogy
+
+Pizza 🍕
+
+Restaurant me pizza ban gaya.
+
+Ab delivery boy usse box me pack karta hai.
+
+Customer Delhi me ho
+
+Mumbai me
+
+London me
+
+Pizza same rahega.
+
+Docker bhi wahi karta hai.
+
+Application ko ek box me pack karta hai.
+
+Us box ko bolte hain
+
+Container
+
+Without Docker
+
+Developer
+
+↓
+
+Install Node
+
+↓
+
+Install Mongo
+
+↓
+
+Install Redis
+
+↓
+
+Install Python
+
+↓
+
+Install Java
+
+↓
+
+Version conflict
+
+↓
+
+Project crash
+
+With Docker
+
+Developer
+
+↓
+
+docker compose up
+
+↓
+
+Everything works.
+
+Why Optimized?
+
+Suppose
+
+100 developers
+
+Har developer
+
+2 ghante environment setup.
+
+Total
+
+200 hours.
+
+Docker
+
+↓
+
+5 minutes.
+
+Huge saving.
+
+VM vs Docker
+
+Virtual Machine
+
+Hardware
+
+↓
+
+Host OS
+
+↓
+
+Hypervisor
+
+↓
+
+Guest OS
+
+↓
+
+App
+
+Har VM ka apna OS.
+
+Heavy.
+
+Docker
+
+Hardware
+
+↓
+
+Host OS
+
+↓
+
+Docker Engine
+
+↓
+
+Containers
+
+↓
+
+App
+
+No Guest OS.
+
+Isliye
+
+Fast startup
+Less RAM
+Less CPU
+Small size
+First Principle Definition
+
+Interviewer:
+
+What is Docker?
+
+Answer:
+
+Docker solves the "it works on my machine" problem. Instead of shipping only application code, Docker packages the application along with its runtime, dependencies, libraries, and configuration into an image. That image runs as an isolated container on any machine with Docker installed, giving consistent behavior across development, testing, and production.
+
+Interview Analogy
+
+Interviewer:
+
+Why not just install Node everywhere?
+
+Answer:
+
+Imagine every developer cooks the same recipe in a different kitchen. One kitchen has different ingredients, another has an older oven, another is missing tools. The same recipe gives different results.
+
+Docker is like giving everyone the same fully equipped portable kitchen, not just the recipe.
+
+How Docker Works Internally
+Code
+        │
+        ▼
+Dockerfile
+        │
+        ▼
+Docker Image
+        │
+docker run
+        ▼
+Docker Container
+30-Second Interview Answer
+
+"Docker is a containerization platform. Before Docker, applications often failed when moved between environments because OS libraries, runtime versions, and dependencies differed. Docker packages the application together with everything it needs into an image. That image runs as an isolated container, so the application behaves consistently on any machine. Compared to virtual machines, containers share the host OS kernel, making them much lighter, faster to start, and more resource-efficient."
+
+Interviewer agar deep puch le:
+
+Q: Docker Image aur Container me difference?
+
+Image = Blueprint (read-only template).
+Container = Running instance of that image.
+
+Analogy: Image is like a class in OOP, and a container is like an object created from that class.
